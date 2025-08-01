@@ -1,0 +1,13 @@
+# Core data processing libraries
+pandas==2.1.4
+numpy==1.24.4
+
+# Database connectivity
+psycopg2-binary==2.9.9
+SQLAlchemy==1.4.53
+
+# Data validation and quality
+great-expectations==0.18.8
+
+# Additional utilities
+python-dotenv==1.0.0

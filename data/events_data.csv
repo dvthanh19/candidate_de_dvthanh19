@@ -1,0 +1,9 @@
+event_id,event_name,num_slots,event_registered_date,event_started_date,event_end_date,event_status
+793,Morning Run @ East Coast Park,700.0, 2023-09-07,2023-09-14,2023-09-16,
+582,Boxing Day @ Clarke Quay ,130.0,,2023-09-14,2023-09ü17,In-progress
+653,HIIT Training @ Kallang Wave,,2023-09-09,2023-09-16,2023-09-19,In-progress
+711,,800.0,2023-09-04,2023-09-11,2023-09-13,In-progress
+966,Yoga by the Marina®@ Marina Bay Sands,700.0,2023-09-02,2023-09-09,2023-09-12,Completed
+45,Beach Volleyball Bash @ Siloso Beach,230.0,2023-09-07,2023-09-14,2023-09-16,Completed
+771,Singapore Skating Showdown @ Somerset Skate Park,130.0,2023-09-19 ,2023-09-26,2023-0®-29,Completed
+101,Ultimate Frisbee Frenzy @ Bukit Timah Nature Reserve,130.0,2023-09-12,,,Completed
