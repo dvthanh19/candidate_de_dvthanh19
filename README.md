@@ -14,7 +14,7 @@ This assessment has a **strict deadline**. You must submit your work **before th
 - Complete all work in your own branch: `candidate/[your-name]`
 - Comments are welcome in the **Additional Notes** section of your `ANSWERS.md`
 - When ready to submit, push your branch to the repository
-- Email **tien.pnt@wearecare.sg** to notify HR about your submission
+- Email to HR to notify about your submission
 
 Send us questions if you have any. We're looking forward to reviewing your task. Good luck! 🚀
 
