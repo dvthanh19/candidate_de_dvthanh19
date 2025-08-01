@@ -13,9 +13,9 @@
 
 ## Step 2: Clone Repository
 ```bash
-# Replace YOUR_TOKEN with the token provided by your administrator
-git clone https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
-cd de-homework-assignment
+# Replace [YOUR_TOKEN] with the token provided by your administrator
+git clone https://project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]@gitlab.com/doctorworld/assignments/[CANDIDATE_REPO_NAME].git
+cd [CANDIDATE_REPO_NAME]
 ```
 
 **💡 Token Reuse**: You can use the same token throughout your assessment for:
@@ -28,8 +28,8 @@ cd de-homework-assignment
 ⚠️ **IMPORTANT**: After cloning, you must update the remote URL to enable push operations:
 
 ```bash
-# Replace YOUR_TOKEN with your actual token
-git remote set-url origin https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
+# Replace [YOUR_TOKEN] with your actual token
+git remote set-url origin https://project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]@gitlab.com/doctorworld/assignments/[CANDIDATE_REPO_NAME].git
 
 # Verify the remote URL includes your token
 git remote -v
@@ -37,39 +37,24 @@ git remote -v
 
 **💡 Why this step is needed**: Git clone downloads the code but doesn't store your token for future push operations. This step ensures you can push your work.
 
-## Step 3: Switch to Your Assigned Branch
-```bash
-# Your branch has been pre-created for you
-# Replace "your-name" with the branch name provided by your administrator
-# Example: candidate/john-smith
-git checkout candidate/your-name
-
-# Verify you're on the correct branch
-git branch
-```
-
-**Note**: Your candidate branch has been pre-configured with access permissions. You must work only on this assigned branch.
-
-## Step 4: How to Submit Your Work
+## Step 3: How to Submit Your Work
 
 When you're ready to submit your completed assessment:
 
-1. **Ensure you're on your assigned branch:**
+1. **Make sure you're in your repository directory:**
    ```bash
-   git checkout candidate/[your-name]
-   git branch  # Verify you're on the correct branch
+   # You should already be in your cloned repository
+   pwd  # Should show your repository path
    ```
 
 2. **Push your final work:**
    ```bash
    git add .
    git commit -m "Final submission: Complete ETL pipeline and analysis"
-   git push origin candidate/[your-name]
+   git push origin main
    ```
 
 3. **Email notification to HR** confirming your submission is complete
-
-**⚠️ Important**: You must push to your assigned branch only. The main branch is protected and cannot be modified.
 
 ## What's Next?
 After completing the setup above:
@@ -77,18 +62,17 @@ After completing the setup above:
 1. **Read the main README.md** for detailed assessment requirements
 2. **Review data/erd_chart.png** for database schema
 3. **Follow the complete instructions** in the repository README
-4. **When finished, follow Step 4 above to submit your work**
+4. **When finished, follow Step 3 above to submit your work**
 
 ## Troubleshooting
 ### Git Problems
 - **Access denied**: Check if you're using the correct token from Step 1
-- **Authentication failed**: Verify you're using the correct format `project_72193518_bot:YOUR_TOKEN`
-- **Can't clone**: Make sure you replaced YOUR_TOKEN with your actual token
+- **Authentication failed**: Verify you're using the correct format `project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]`
+- **Can't clone**: Make sure you replaced [YOUR_TOKEN] with your actual token
 - **Push fails with "You are not allowed to upload code"**: 
-  - Did you complete Step 2.1? Run: `git remote set-url origin https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git`
-  - Check if token has expired or if you're on the wrong branch
-  - Verify you're on your branch: `git branch`
-- **Push fails to main branch**: This is expected - main branch is protected. Work only in your assigned branch.
+  - Did you complete Step 2.1?
+  - Check if token has expired
+  - Verify your token has Developer role permissions
 - **Invalid token format**: Token should look like `glpat-xxxxxxxxxxxxxxxxxxxx`
 
 ### Common Issues

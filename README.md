@@ -10,21 +10,21 @@ This assessment has a **strict deadline**. You must submit your work **before th
 
 ❗ **Important**: If you haven't already, please read **READ_FIRST.md** for GitLab access setup instructions before starting.
 
-## 🔒 Branch-Based Assessment Approach
+## 🔒 Individual Repository Assessment Approach
 
-This assessment uses a **secure branch-based workflow** with the following features:
+This assessment uses a **secure individual repository workflow** with the following features:
 
-✅ **Individual branch assignment**: Each candidate gets their own branch (e.g., `candidate/john-smith`)  
-✅ **Protected main branch**: The template on main branch is read-only - you cannot modify it  
-✅ **Separated access times**: Candidates access the repository at different scheduled times for security  
+✅ **Individual repository**: Each candidate gets their own dedicated repository  
+✅ **Template mirroring**: Your repository is mirrored from the main template repository  
+✅ **Separated access times**: Candidates access their repositories at different scheduled times for security  
 ✅ **Individual tokens**: Each candidate receives a unique, time-limited access token  
-✅ **Controlled isolation**: While you can see the repository structure, you can only push to your assigned branch  
+✅ **Full repository access**: You have complete access to your dedicated repository  
 
 **Getting Started:**
-- Complete all work in your assigned branch: `candidate/[your-name]` (pre-created for you)
-- **Main branch is read-only** - it contains the original template and cannot be modified
+- Complete all work directly in your repository
+- You have full access to modify any files as needed
 - Comments are welcome in the **Additional Notes** section of your `ANSWERS.md`
-- When ready to submit, push your branch to the repository
+- When ready to submit, push your work to the repository
 - Email to HR to notify about your submission
 
 Send us questions if you have any. We're looking forward to reviewing your task. Good luck! 🚀
@@ -140,12 +140,9 @@ The goal is to demonstrate your data engineering skills - the implementation app
 ⚠️ **Important**: The Docker setup files are sample templates only. You may need to modify or replace them.
 
 ```bash
-# You should have already cloned the repository and switched to your branch
+# You should have already cloned your individual repository
 # Navigate to your project directory
-cd de-homework-assignment
-
-# Ensure you're on your assigned branch
-git checkout candidate/[your-name]
+cd [your-repository-name]
 
 # Option 1: Try the sample Docker setup (may need modifications)
 docker-compose up -d --build
@@ -211,13 +208,13 @@ docker-compose ps
 
 # Submission Requirements
 
-After completing your pipeline, ensure your **assigned branch** includes:
+After completing your pipeline, ensure your **repository** includes:
 1. All source code for your ETL pipeline (DAGs, helper functions)
 2. Updated `ANSWERS.md` with your business question responses
 3. Any custom SQL scripts or schema definitions
 4. Clear git commit history showing your development process
 
-**For submission instructions**, refer to **Step 4** in the **READ_FIRST.md** file.
+**For submission instructions**, refer to **Step 3** in the **READ_FIRST.md** file.
 
 ---
 
