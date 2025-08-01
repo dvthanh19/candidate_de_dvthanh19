@@ -13,8 +13,8 @@
 
 ## Step 2: Clone Repository
 ```bash
-# Replace PROJECT_ID and YOUR_TOKEN with the values provided by your administrator
-git clone https://project_{PROJECT_ID}_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
+# Replace YOUR_TOKEN with the token provided by your administrator
+git clone https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
 cd de-homework-assignment
 ```
 
@@ -24,16 +24,11 @@ cd de-homework-assignment
 - Pushing changes multiple times
 - The token remains valid until your deadline
 
-**Example with project access token:**
-```bash
-git clone https://project_12345_bot:glpat-xxxxxxxxxxxxxxxxxxxx@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
-```
-
 ## Step 2.1: Configure Remote URL (If Already Cloned)
 If you already have a local repository, update the remote URL:
 ```bash
-# Replace PROJECT_ID and YOUR_TOKEN with actual values
-git remote set-url origin https://project_{PROJECT_ID}_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
+# Replace YOUR_TOKEN with your actual token
+git remote set-url origin https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
 
 # Verify the remote URL
 git remote -v
@@ -62,7 +57,7 @@ After completing the setup above:
 ## Troubleshooting
 ### Git Problems
 - **Access denied**: Check if you're using the correct token from Step 1
-- **Authentication failed**: Verify you included `gitlab-ci-token:` before your token
+- **Authentication failed**: Verify you're using the correct format `project_72193518_bot:YOUR_TOKEN`
 - **Can't clone**: Make sure you replaced YOUR_TOKEN with your actual token
 - **Push fails**: Check if token has expired or if you're on the wrong branch
 - Verify you're on your branch: `git branch`
