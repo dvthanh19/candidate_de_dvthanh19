@@ -11,7 +11,7 @@ This assessment has a **strict deadline**. You must submit your work **before th
 ❗ **Important**: If you haven't already, please read **READ_FIRST.md** for GitLab access setup instructions before starting.
 
 **Getting Started:**
-- Complete all work in your own branch: `candidate/[your-name]`
+- Complete all work in your assigned branch: `candidate/[your-name]` (pre-created for you)
 - Comments are welcome in the **Additional Notes** section of your `ANSWERS.md`
 - When ready to submit, push your branch to the repository
 - Email to HR to notify about your submission

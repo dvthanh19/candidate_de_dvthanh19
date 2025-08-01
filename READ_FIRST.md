@@ -13,8 +13,8 @@
 
 ## Step 2: Clone Repository
 ```bash
-# Replace YOUR_TOKEN with the token you saved in Step 1
-git clone https://gitlab-ci-token:YOUR_TOKEN@gitlab.com/wearecare/de-homework-assignment.git
+# Replace PROJECT_ID and YOUR_TOKEN with the values provided by your administrator
+git clone https://project_{PROJECT_ID}_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
 cd de-homework-assignment
 ```
 
@@ -24,17 +24,33 @@ cd de-homework-assignment
 - Pushing changes multiple times
 - The token remains valid until your deadline
 
-**Example with token:**
+**Example with project access token:**
 ```bash
-git clone https://gitlab-ci-token:glpat-xxxxxxxxxxxxxxxxxxxx@gitlab.com/wearecare/de-homework-assignment.git
+git clone https://project_12345_bot:glpat-xxxxxxxxxxxxxxxxxxxx@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
 ```
 
-## Step 3: Create Your Branch
+## Step 2.1: Configure Remote URL (If Already Cloned)
+If you already have a local repository, update the remote URL:
 ```bash
-# Replace "your-name" with your actual name (lowercase, hyphens for spaces)
-# Example: candidate/john-smith
-git checkout -b candidate/your-name
+# Replace PROJECT_ID and YOUR_TOKEN with actual values
+git remote set-url origin https://project_{PROJECT_ID}_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
+
+# Verify the remote URL
+git remote -v
 ```
+
+## Step 3: Switch to Your Assigned Branch
+```bash
+# Your branch has been pre-created for you
+# Replace "your-name" with the branch name provided by your administrator
+# Example: candidate/john-smith
+git checkout candidate/your-name
+
+# Verify you're on the correct branch
+git branch
+```
+
+**Note**: Your candidate branch has been pre-configured with access permissions. You must work only on this assigned branch.
 
 ## What's Next?
 After completing the setup above:
