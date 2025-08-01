@@ -24,15 +24,18 @@ cd de-homework-assignment
 - Pushing changes multiple times
 - The token remains valid until your deadline
 
-## Step 2.1: Configure Remote URL (If Already Cloned)
-If you already have a local repository, update the remote URL:
+## Step 2.1: Configure Push Access (CRITICAL)
+⚠️ **IMPORTANT**: After cloning, you must update the remote URL to enable push operations:
+
 ```bash
 # Replace YOUR_TOKEN with your actual token
 git remote set-url origin https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git
 
-# Verify the remote URL
+# Verify the remote URL includes your token
 git remote -v
 ```
+
+**💡 Why this step is needed**: Git clone downloads the code but doesn't store your token for future push operations. This step ensures you can push your work.
 
 ## Step 3: Switch to Your Assigned Branch
 ```bash
@@ -47,20 +50,45 @@ git branch
 
 **Note**: Your candidate branch has been pre-configured with access permissions. You must work only on this assigned branch.
 
+## Step 4: How to Submit Your Work
+
+When you're ready to submit your completed assessment:
+
+1. **Ensure you're on your assigned branch:**
+   ```bash
+   git checkout candidate/[your-name]
+   git branch  # Verify you're on the correct branch
+   ```
+
+2. **Push your final work:**
+   ```bash
+   git add .
+   git commit -m "Final submission: Complete ETL pipeline and analysis"
+   git push origin candidate/[your-name]
+   ```
+
+3. **Email notification to HR** confirming your submission is complete
+
+**⚠️ Important**: You must push to your assigned branch only. The main branch is protected and cannot be modified.
+
 ## What's Next?
 After completing the setup above:
 
 1. **Read the main README.md** for detailed assessment requirements
 2. **Review data/erd_chart.png** for database schema
 3. **Follow the complete instructions** in the repository README
+4. **When finished, follow Step 4 above to submit your work**
 
 ## Troubleshooting
 ### Git Problems
 - **Access denied**: Check if you're using the correct token from Step 1
 - **Authentication failed**: Verify you're using the correct format `project_72193518_bot:YOUR_TOKEN`
 - **Can't clone**: Make sure you replaced YOUR_TOKEN with your actual token
-- **Push fails**: Check if token has expired or if you're on the wrong branch
-- Verify you're on your branch: `git branch`
+- **Push fails with "You are not allowed to upload code"**: 
+  - Did you complete Step 2.1? Run: `git remote set-url origin https://project_72193518_bot:YOUR_TOKEN@gitlab.com/doctorworld/data-analysis/de-homework-assignment.git`
+  - Check if token has expired or if you're on the wrong branch
+  - Verify you're on your branch: `git branch`
+- **Push fails to main branch**: This is expected - main branch is protected. Work only in your assigned branch.
 - **Invalid token format**: Token should look like `glpat-xxxxxxxxxxxxxxxxxxxx`
 
 ### Common Issues

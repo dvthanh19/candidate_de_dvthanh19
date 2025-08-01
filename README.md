@@ -10,8 +10,19 @@ This assessment has a **strict deadline**. You must submit your work **before th
 
 ❗ **Important**: If you haven't already, please read **READ_FIRST.md** for GitLab access setup instructions before starting.
 
+## 🔒 Branch-Based Assessment Approach
+
+This assessment uses a **secure branch-based workflow** with the following features:
+
+✅ **Individual branch assignment**: Each candidate gets their own branch (e.g., `candidate/john-smith`)  
+✅ **Protected main branch**: The template on main branch is read-only - you cannot modify it  
+✅ **Separated access times**: Candidates access the repository at different scheduled times for security  
+✅ **Individual tokens**: Each candidate receives a unique, time-limited access token  
+✅ **Controlled isolation**: While you can see the repository structure, you can only push to your assigned branch  
+
 **Getting Started:**
 - Complete all work in your assigned branch: `candidate/[your-name]` (pre-created for you)
+- **Main branch is read-only** - it contains the original template and cannot be modified
 - Comments are welcome in the **Additional Notes** section of your `ANSWERS.md`
 - When ready to submit, push your branch to the repository
 - Email to HR to notify about your submission
@@ -23,7 +34,7 @@ The primary purpose of this test is to build a robust data pipeline that process
 
 💡 _Hint_: Reading through the tasks, you might decide to change your approach. So, it's a good idea to **read the entire document before you start**.
 
-Feel free to write the data pipeline in pure Python code or use a framework such as [dbt](https://docs.getdbt.com/) or [Apache Airflow](https://airflow.apache.org/).
+Feel free to write the data pipeline in pure Python code or use a framework such as [dbt](https://docs.getdbt.com/) or [Apache Airflow](https://airflow.apache.org/). You have complete freedom to choose your preferred tools, technologies, and architecture - the sample Docker files are just starting templates.
 
 0. **Business Questions** 🤔
 
@@ -34,13 +45,19 @@ Feel free to write the data pipeline in pure Python code or use a framework such
 Once you've developed and run your pipeline, please explore the resulting data and provide your answers in a separate `ANSWERS.md` file.
 
 1. **Set up your development environment**
-We've provided a complete Docker environment for you. Simply run:
+We've provided sample Docker templates as a starting point. You can use them as-is, modify them, or create your own setup:
 ```bash
+# Option 1: Use the provided templates (modify as needed)
 docker-compose up -d --build
+
+# Option 2: Create your own setup
+# Implement your preferred data engineering stack
 ```
-This will start:
+The sample setup includes:
 - PostgreSQL database with the `health_tracking` database ready for your data
 - Apache Airflow with web UI accessible at http://localhost:8080
+
+**Note**: These are untested templates - feel free to fix any issues or implement your own solution entirely.
 
 2. **Create your data pipeline**
 Build an Apache Airflow DAG that performs ETL operations on the health tracking data:
@@ -101,29 +118,48 @@ health_data_pipeline/
 └── ANSWERS.md
 ```
 
-## Provided Docker Setup
+## Provided Docker Setup (Sample Templates)
 
-We provide a complete Docker environment including:
-- **Dockerfile**: Based on `apache/airflow:2.10.5-python3.12` with all necessary dependencies
-- **docker-compose.yml**: Full orchestration with Airflow and PostgreSQL services
-- **requirements.txt**: Pre-configured Python packages for data processing
-- **sql/init_health_db.sql**: Database initialization script
+⚠️ **Important**: The following Docker configuration files are **sample templates only** and have not been fully tested. You are encouraged to modify, replace, or create your own setup as needed:
 
-You can modify these files as needed for your implementation.
+- **Dockerfile**: Sample based on `apache/airflow:2.10.5-python3.12` 
+- **docker-compose.yml**: Sample orchestration with Airflow and PostgreSQL services
+- **requirements.txt**: Sample Python packages for data processing
+- **sql/init_health_db.sql**: Sample database initialization script
+
+**You have complete freedom to:**
+- Modify these templates to fit your preferred approach
+- Create your own Docker configuration from scratch
+- Use different technologies, frameworks, or architectures
+- Implement the solution without Docker if you prefer
+
+The goal is to demonstrate your data engineering skills - the implementation approach is entirely up to you.
 
 ## Environment Setup
-```bash
-# Clone your repository and navigate to the project directory
-cd your-project-directory
 
-# Build and start all services (this will take 5-10 minutes)
+⚠️ **Important**: The Docker setup files are sample templates only. You may need to modify or replace them.
+
+```bash
+# You should have already cloned the repository and switched to your branch
+# Navigate to your project directory
+cd de-homework-assignment
+
+# Ensure you're on your assigned branch
+git checkout candidate/[your-name]
+
+# Option 1: Try the sample Docker setup (may need modifications)
 docker-compose up -d --build
 
-# Check if services are running
+# Option 2: Implement your own development environment
+# Use your preferred tools and technologies
+
+# If using the sample setup, check if services are running
 docker-compose ps
 ```
 
-## Access Services
+## Access Services (If Using Sample Docker Setup)
+
+**Note**: These credentials are for the sample Docker templates only. Modify as needed for your implementation.
 
 1. **Airflow Web UI**: [http://localhost:8080](http://localhost:8080)
    ```
@@ -164,19 +200,24 @@ docker-compose ps
   ```
 - Answer the business questions in the `ANSWERS.md` file
 
-## Troubleshooting
+## Troubleshooting (Sample Docker Setup)
+
+**Note**: These troubleshooting tips apply to the sample Docker templates. For your own implementation, troubleshoot according to your chosen stack.
+
 - If containers fail to start, check Docker logs: `docker-compose logs`
 - Ensure you have sufficient system resources (4GB RAM minimum)
 - Wait for PostgreSQL health checks to pass before Airflow starts
+- **Docker setup issues**: The templates are untested - you may need to fix configuration issues or implement your own solution
 
 # Submission Requirements
 
-After completing your pipeline, ensure your repository includes:
+After completing your pipeline, ensure your **assigned branch** includes:
 1. All source code for your ETL pipeline (DAGs, helper functions)
 2. Updated `ANSWERS.md` with your business question responses
 3. Any custom SQL scripts or schema definitions
 4. Clear git commit history showing your development process
 
+**For submission instructions**, refer to **Step 4** in the **READ_FIRST.md** file.
 
 ---
 
