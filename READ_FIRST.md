@@ -14,7 +14,7 @@
 ## Step 2: Clone Repository
 ```bash
 # Replace [YOUR_TOKEN] with the token provided by your administrator
-git clone https://project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]@gitlab.com/doctorworld/assignments/[CANDIDATE_REPO_NAME].git
+git clone https://project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]@gitlab.com/doctorworld/data-analysis/assignments/[CANDIDATE_REPO_NAME].git
 cd [CANDIDATE_REPO_NAME]
 ```
 
@@ -29,7 +29,7 @@ cd [CANDIDATE_REPO_NAME]
 
 ```bash
 # Replace [YOUR_TOKEN] with your actual token
-git remote set-url origin https://project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]@gitlab.com/doctorworld/assignments/[CANDIDATE_REPO_NAME].git
+git remote set-url origin https://project_[ASSIGNED_PROJ_ID]_bot:[YOUR_TOKEN]@gitlab.com/doctorworld/data-analysis/assignments/[CANDIDATE_REPO_NAME].git
 
 # Verify the remote URL includes your token
 git remote -v
