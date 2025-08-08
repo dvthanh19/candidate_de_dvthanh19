@@ -10,7 +10,7 @@ After running your data pipeline, provide answers to the business questions in t
 - The events with the highest participation rates are:
   - **Ultimate Frisbee Frenzy @ Bu** (0.80)
   - **Singapore Skating Showdown** (0.78)  
---> These events filled a large proportion of their available slots
+--> These events filled a large proportion of their available slots.
 
 - Larger events (**Morning Run @ East Coast Park** and **Beach Volleyball Bash @ Silos**) have more participants in absolute numbers, but lower participation rates due to higher slot counts.
 
