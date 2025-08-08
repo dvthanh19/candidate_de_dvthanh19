@@ -28,6 +28,7 @@ x-airflow-common:
 services:
   postgres:
     image: postgres:13
+    hostname: postgres-airflow
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -35,6 +36,7 @@ services:
     volumes:
       - postgres_db_volume:/var/lib/postgresql/data
       - ./sql/init_health_db.sql:/docker-entrypoint-initdb.d/01-init_health_db.sql
+      - ./sql:/sql
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 10s
@@ -42,7 +44,7 @@ services:
       start_period: 5s
     restart: always
     ports:
-      - "5432:5432"
+      - 5435:5432
 
   airflow-webserver:
     <<: *airflow-common

@@ -11,3 +11,5 @@ great-expectations==0.18.8
 
 # Additional utilities
 python-dotenv==1.0.0
+
+pycountry==24.6.1

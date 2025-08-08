@@ -214,3 +214,7 @@ airflow.cfg
 airflow_login.py
 standalone_admin_password.txt
 webserver_config.py
+
+
+# Virtual environments
+venv
