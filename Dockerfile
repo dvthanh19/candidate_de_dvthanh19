@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r /requirements.txt
 COPY dags/ /opt/airflow/dags/
 COPY data/ /opt/airflow/data/
 COPY sql/ /opt/airflow/sql/
-COPY dbt/ /opt/airflow/dbt/
+# COPY dbt/ /opt/airflow/dbt/
 
 # Set environment variables
 ENV AIRFLOW__CORE__LOAD_EXAMPLES=False

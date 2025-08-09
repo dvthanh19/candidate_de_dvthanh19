@@ -13,3 +13,4 @@ great-expectations==0.18.8
 python-dotenv==1.0.0
 
 pycountry==24.6.1
+unidecode==1.3

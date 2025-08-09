@@ -8,11 +8,11 @@ After running your data pipeline, provide answers to the business questions in t
 **Answer:** Here are the insights from the event participation analysis table:
 
 - The events with the highest participation rates are:
-  - **Ultimate Frisbee Frenzy @ Bu** (0.80)
-  - **Singapore Skating Showdown** (0.78)  
+  - **Ultimate Frisbee Frenzy @ Bukit Timah Nature Reserve** (0.80)
+  - **Singapore Skating Showdown @ Somerset Skate Park** (0.78)  
 --> These events filled a large proportion of their available slots.
 
-- Larger events (**Morning Run @ East Coast Park** and **Beach Volleyball Bash @ Silos**) have more participants in absolute numbers, but lower participation rates due to higher slot counts.
+- Larger events (**Morning Run @ East Coast Park** and **Beach Volleyball Bash @ Siloso Beach**) have more participants in absolute numbers, but lower participation rates due to higher slot counts.
 
  
 => The medium or small sized events possess the higher participation rate compared to the larger event, however the approached participants of the latter is about 3 times larger in the figure for participants.
@@ -32,8 +32,8 @@ SELECT
     , e.num_slots
     , COUNT(DISTINCT ua.user_id) AS num_participants
     , ROUND(COUNT(DISTINCT ua.user_id)::numeric / NULLIF(e.num_slots, 0), 2) AS participation_rate
-FROM dwh_event AS e
-LEFT JOIN dwh_user_activity AS ua 
+FROM stg_event AS e
+LEFT JOIN stg_user_activity AS ua 
     ON e.event_id = ua.event_id
     AND lower(ua.user_status) = 'participated'
 GROUP BY e.event_id, e.event_name, e.num_slots
@@ -89,8 +89,8 @@ SELECT
     , u.nationality
     , u.country_of_work
     , ROUND(AVG(l.value), 2) AS avg_daily_value
-FROM dwh_lifestyle_log AS l
-LEFT JOIN dwh_user AS u 
+FROM stg_lifestyle_log AS l
+LEFT JOIN stg_user AS u 
     ON l.user_id = u.user_id
 WHERE l.log_type IN ('step', 'sleep', 'mvpa')
     AND u.user_id IS NOT NULL
@@ -110,70 +110,166 @@ ORDER BY ROUND(AVG(l.value), 2)
 ## Business Question 3: Data Quality Issues
 **Question:** Identify and report on data quality issues in the provided datasets. Which files have the most missing values or inconsistencies?
 
-**Answer:** Based on the data cleaning and loading process, the users_data.csv file has the most data quality issues. It contains a high number of missing values, inconsistencies (such as typos and duplicate records), and more rows and columns compared to other files. These issues required extensive cleaning, including handling missing values, standardizing categorical fields, and deduplicating records. Other files (such as event, activity, and log files) had fewer columns and less frequent inconsistencies.
+**Answer:** Based on the data cleaning and loading process, the **health_measurements.csv** file has the most data quality issues. It contains a high number of missing values at heath_index. 
+
+However, the inconsistencies (such as typos and duplicate records), missing in **users_data.csv** are more diversed compared to other files. These issues required extensive cleaning, including handling missing values, standardizing categorical fields, and deduplicating records. Other files (such as event, activity, and log files) had fewer columns and less frequent inconsistencies.
+
+*I do not used great_expectations library in Python but I have used it in DBT. Therefore, in this mini project, without DBT, I prefer to use normal pandas and numpy to quality for data.*
+
+--- Data Quality Report for users_data.csv ---
+Shape: (10500, 9)
+Error counts per column:
+{
+  "user_id_missing": 0,
+  "user_id_duplicates": 499,
+  "user_id_negative": 0,
+  "sex_missing": 1056,
+  "sex_invalid": 2351,
+  "age_missing": 1058,
+  "age_negative": 0,
+  "plan_missing": 1051,
+  "plan_invalid": 9281,
+  "department_missing": 1044,
+  "department_invalid": 2245,
+  "ethnicity_missing": 1041,
+  "ethnicity_invalid": 2256
+}
+Number of error rows: 9925
+
+--- Data Quality Report for activity_participation.csv ---
+Shape: (4704, 4)
+Error counts per column:
+{
+  "user_id_missing": 0,
+  "user_id_negative": 0,
+  "event_id_missing": 0,
+  "event_id_negative": 0,
+  "user_status_missing": 374,
+  "user_status_invalid": 4223
+}
+Number of error rows: 4223
+
+--- Data Quality Report for events_data.csv ---
+Shape: (8, 7)
+Error counts per column:
+{
+  "event_id_missing": 0,
+  "event_id_negative": 0,
+  "event_name_missing": 1,
+  "num_slots_missing": 1,
+  "num_slots_negative": 0
+}
+Number of error rows: 2
+
+--- Data Quality Report for health_measurements.csv ---
+Shape: (299008, 7)
+Error counts per column:
+{
+  "user_id_missing": 0,
+  "user_id_negative": 0,
+  "value_missing": 0,
+  "value_negative": 0,
+  "health_index_missing": 263083,
+  "health_index_negative": 0
+}
+Number of error rows: 263083
+
+--- Data Quality Report for lifestyle_metrics.csv ---
+Shape: (405630, 5)
+Error counts per column:
+{
+  "user_id_missing": 0,
+  "user_id_negative": 0,
+  "log_type_missing": 0,
+  "value_missing": 0,
+  "value_negative": 0
+}
+Number of error rows: 0
+
+--- Data Quality Report for mindfulness_scores.csv ---
+Shape: (145907, 6)
+Error counts per column:
+{
+  "user_id_missing": 0,
+  "user_id_negative": 0,
+  "score_missing": 0,
+  "score_negative": 0
+}
+Number of error rows: 0
+
+--- Data Quality Report for user_journey_messy.csv ---
+Shape: (22960, 4)
+Error counts per column:
+{
+  "user_id_missing": 0,
+  "status_missing": 1854
+}
+Number of error rows: 1854
 
 **Method:**
-- Reviewed each dataset during the cleaning process.
-- Noted the frequency of missing values, typos, and duplicate records.
-- Compared the number of rows and columns across files.
+- Review each dataset during the cleaning process.
+- Note the frequency of missing values, typos, and duplicate records.
+- Compare the number of error cells, rows and columns across files.
 
 **SQL Query/Code Used:**
 ```sql
--- Please check the clean function in each dag
+-- Please check the ./data__quality/data__quality.py
 ```
 
 ---
 
 ## Additional Notes
-
-[Include any additional thoughts, challenges faced, design decisions, or areas for improvement]
-
 ### Pipeline Design Decisions
 **Design:**
 Components:  
-- Pure Python for cleaning and loading data
-- SQL to create table, view and analyse data
-- Airflow for orchestration
+- Pure Python for quality, cleaning and loading data.
+- SQL to create table, view and analyse data.
+- Airflow for orchestration.
 Flow:  
-    - All dag can be triggered at a time
-    - Data will be stored into PosgreSQL
-    - Query from view to get required data
+    - All dag can be triggered at a time due to 1 data layer (staging).
+    - Data will be stored into PosgreSQL.
+    - Query from views to get required data.
 
 
 **Explanation:**
-- Due to my current company workload, I have not had much time to build a pipeline with dbt tool and develop it in a standard pipeline with high scalibility, monitoring, data quality, authentication, authorization
-- The file can be considered as a lake storage or landing layer in a fully built architecture
-- Data has many error iniside: missing, typos and duplication
-    - Only small part of fields can be infered from other field (e.g: age -> age_bin)
+- Due to my current company workload, I have not had much time to build a pipeline with dbt tool and develop it in a standard pipeline with high scalibility, monitoring, data quality, authentication, authorization.
+- The file can be considered as a lake storage or landing layer in a fully built architecture.
+- Data has many error iniside: missing, typos and duplication.
+    - Only small part of fields can be infered from other field (e.g: age -> age_bin).
     - Typo error is only can solved by code nor the sql.
-    - Divide cleaning step to 2 small parts: fix error and solve missing data if possible + deuplicate data. Therefore, we can load data and then use SQL to deduplicate it (staging layer)
+    - Divide cleaning step to 2 small parts: fix error and solve missing data if possible + deuplicate data.
 
 ### Challenges Encountered
-- The fundamental of this project is not clear for OLAP or OLTP
-- It is hard to deduplicate for id due to missing monitoring columns: created_at, updated_at
-Solution
-- I assume it is a OLAP because the given data file (despite missing monitoring columns)
-- I do not set primary key when creating table despite my primary key recognisation (for join)
-    - To check the quality of data and announce about the error
-    - OLTP do not allow dupplication for key column(s)
+- The fundamental of this project is not clear for OLAP or OLTP.
+- It is hard to deduplicate for id due to missing monitoring columns: created_at, updated_at.
+- It is difficult to balance between a standard pipeline or just a pipeline focusing on main features only.
+**Solution**
+- I assume it is a OLAP because the given data file (despite missing monitoring columns).
+- I do not set primary key when creating table despite my primary key recognisation (for join).
+    - To check the quality of data and announce about the error.
+    - OLTP do not allow dupplication for key column(s).
+- Build a simple pipeline with some main features only due to data size, data complicated, analysis requirements as well as my time limit.
 
 
 ### Areas for Improvement
 - Tools:
-    - Add dbt for:
-        - transforming data
-        - data goverance
-        - data quality
-        - develop in 3 develop evironment (development, staging, production)
-    - Airflow 
-        - run dbt models  with commands
-        - access control
-        - dag relationship
-        - logs
-        - plugins to keep code clean and no repeatation
-        - retry mechanism
-    - Monitoring job and alert with failed job: 
-- Analyse data carefully to provide usefull insight
+    - DBT:
+        - transforming data.
+        - data goverance.
+        - data quality.
+        - develop in 3 develop environment (development, staging, production).
+        - credentials for DB connection.
+    - Airflow:
+        - run dbt models with commands.
+        - control order of dags, status of dags for monitoring.
+        - access control.
+        - dag relationship.
+        - logs.
+        - plugins to keep code clean and no repeatation.
+        - retry mechanism.
+- Build full architecture from lake -> staging -> data warehouse.
+- Monitoring job and alert with failed job.
+- Analyse data carefully to provide usefull insight.
 
 ### Data Insights
-- I do not have time to do this part
+- I have not completed this part due to my time limit.
