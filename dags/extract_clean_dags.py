@@ -184,6 +184,8 @@ def import_user_data():
             df['plan'] = df['plan'].astype('string')
             df['department'] = df['department'].astype('string')
 
+            df = df.drop_duplicates(subset=['user_id'])
+
             return df[cols], True
         
         except Exception as e:
@@ -289,6 +291,8 @@ def import_event_data():
             df['event_id'] = df['event_id'].astype('Int64')
             df['num_slots'] = df['num_slots'].astype('Int64')
             
+            df = df.drop_duplicates(subset=['event_id'])
+            
             # df.to_csv(f'{data_prefix_path}/cleaned_users_data.csv', index=False, encoding='utf-8')
             return df, True
         
@@ -392,6 +396,8 @@ def import_user_status_data():
             
             df['user_id'] = df['user_id'].astype('Int64')
             df['user_status'] = df['user_status'].astype('string')
+            
+            df = df.drop_duplicates(subset=['user_id'])
             
             # df.to_csv(f'{data_prefix_path}/cleaned_users_data.csv', index=False, encoding='utf-8')
             return df, True
@@ -500,6 +506,7 @@ def import_life_style_log_data():
             df['value'] = df['value'].apply(clean_value)
             df['value'] = df['value'].astype('Int64')
             
+            df = df.drop_duplicates(subset=['user_id', 'log_type', 'log_date'])
             
             # df.to_csv(f'{data_prefix_path}/cleaned_users_data.csv', index=False, encoding='utf-8')
             return df, True
@@ -603,6 +610,8 @@ def import_mindfulness_scores_data():
             
             df['score'] = df['score'].apply(clean_value)
             df['score'] = df['score'].astype('Int64')
+            
+            df = df.drop_duplicates(subset=['user_id', 'log_type', 'log_date'])
             
             # df.to_csv(f'{data_prefix_path}/cleaned_users_data.csv', index=False, encoding='utf-8')
             return df, True
@@ -719,6 +728,7 @@ def import_user_activity_data():
             df['user_status'] = df['user_status'].apply(clean_status)
             df['user_status'] = df['user_status'].astype('string')
             
+            df = df.drop_duplicates(subset=['user_id', 'event_id', 'user_status'])
             
             # df.to_csv(f'{data_prefix_path}/cleaned_users_data.csv', index=False, encoding='utf-8')
             return df, True
@@ -827,6 +837,7 @@ def import_health_log_data():
             df['health_index'] = df['health_index'].apply(clean_value)
             df['health_index'] = df['health_index'].astype('float')
             
+            df = df.drop_duplicates(subset=['user_id', 'log_type', 'log_date'])
             
             # df.to_csv(f'{data_prefix_path}/cleaned_users_data.csv', index=False, encoding='utf-8')
             return df, True
@@ -867,315 +878,44 @@ def import_health_log_data():
     return True
 
 
-
-def dedup_user_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY user_id) AS rn
-                FROM stg_user
-            )
-            SELECT
-                user_id
-                , sex
-                , plan
-                , age
-                , age_bin
-                , ethnicity
-                , department
-                , nationality
-                , country_of_work
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        
-        df.to_sql('dwh_user', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False
-
-def dedup_event_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY event_id) AS rn
-                FROM stg_event
-            )
-            SELECT
-                event_id
-                , event_name
-                , num_slots
-                , event_registered_date
-                , event_started_date
-                , event_end_date
-                , event_status
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        
-        df.to_sql('dwh_event', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False
-
-def dedup_user_status_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_date DESC) AS rn
-                FROM stg_user_status
-            )
-            SELECT
-                user_id
-                , user_status
-                , created_date
-                , updated_date
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        df.to_sql('dwh_user_status', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False
-    
-def dedup_lifestyle_log_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY user_id, log_type ORDER BY log_date DESC) AS rn
-                FROM stg_lifestyle_log
-            )
-            SELECT
-                user_id
-                , log_type
-                , log_date
-                , value
-                , unit
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        df.to_sql('dwh_lifestyle_log', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False  
-    
-def dedup_mindfulness_scores_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY user_id, log_type ORDER BY log_date DESC) AS rn
-                FROM stg_mindfulness_scores
-            )
-            SELECT
-                user_id
-                , log_type
-                , log_date
-                , score
-                , score_band
-                , mindfulness_band
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        df.to_sql('dwh_mindfulness_scores', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False 
-    
-def dedup_user_activity_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY user_id, event_id ORDER BY status_updated_date DESC) AS rn
-                FROM stg_user_activity
-            )
-            SELECT
-                user_id
-                , event_id
-                , user_status
-                , status_updated_date
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        df.to_sql('dwh_user_activity', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False
-
-def dedup_health_log_data():
-    from sqlalchemy import create_engine
-    import pandas as pd
-    
-    connection_str = 'postgresql://airflow:airflow@postgres-airflow:5432/health_tracking'
-    
-    try:
-        engine = create_engine(connection_str)
-        query = """
-            WITH ranked_data AS (
-                SELECT 
-                    *
-                    , ROW_NUMBER() OVER (PARTITION BY user_id, log_type ORDER BY log_date DESC) AS rn
-                FROM stg_health_log
-            )
-            SELECT
-                user_id
-                , log_type
-                , log_date
-                , value
-                , value_band
-                , unit
-                , health_index
-            from ranked_data
-            WHERE rn = 1
-        """
-        df = pd.read_sql(query, engine)
-        df.to_sql('dwh_health_log', engine, if_exists='replace', index=False)
-        return True
-    except Exception as e:
-        print(f"Error deduplicating data: {e}")
-        return False
-
-
-
-
     
 dag_list = [
     {
         'dag_id': 'import_user_data'
-        , 'next_triggered_dag': 'dedup_user_data'
         , 'function': import_user_data
         , 'schedule_interval': '0 0 * * *'
     }
     , {
         'dag_id': 'import_event_data'
-        , 'next_triggered_dag': 'dedup_event_data'
         , 'function': import_event_data
         , 'schedule_interval': '0 0 * * *'
     }
     , {
         'dag_id': 'import_user_status_data'
-        , 'next_triggered_dag': 'dedup_user_status_data'
         , 'function': import_user_status_data
         , 'schedule_interval': '0 0 * * *'
     }
     , {
         'dag_id': 'import_life_style_log_data'
-        , 'next_triggered_dag': 'dedup_lifestyle_log_data'
         , 'function': import_life_style_log_data
         , 'schedule_interval': '0 0 * * *'
     }
     , {
         'dag_id': 'import_mindfulness_scores_data'
-        , 'next_triggered_dag': 'dedup_mindfulness_scores_data'
         , 'function': import_mindfulness_scores_data
         , 'schedule_interval': '0 0 * * *'
     }
     , {
         'dag_id': 'import_user_activity_data'
-        , 'next_triggered_dag': 'dedup_user_activity_data'
         , 'function': import_user_activity_data
         , 'schedule_interval': '0 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_user_data'
-        , 'function': dedup_user_data
-        , 'schedule_interval': '30 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_event_data'
-        , 'function': dedup_event_data
-        , 'schedule_interval': '30 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_user_status_data'
-        , 'function': dedup_user_status_data
-        , 'schedule_interval': '30 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_lifestyle_log_data'
-        , 'function': dedup_lifestyle_log_data
-        , 'schedule_interval': '30 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_mindfulness_scores_data'
-        , 'function': dedup_mindfulness_scores_data
-        , 'schedule_interval': '30 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_user_activity_data'
-        , 'function': dedup_user_activity_data
-        , 'schedule_interval': '30 0 * * *'
-    }
-    , {
-        'dag_id': 'dedup_health_log_data'
-        , 'function': dedup_health_log_data
-        , 'schedule_interval': '30 0 * * *'
     }
 ]
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2025, 8, 10),
+    'start_date': datetime(2025, 8, 3),
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
 }
@@ -1190,11 +930,9 @@ for dag_info in dag_list:
         , schedule_interval=dag_info.get('schedule_interval', None)
     ) as dag:
         task = PythonOperator(
-            task_id=dag_id
-            , python_callable=import_user_data
+            task_id=f'{dag_id}_task'
+            , python_callable=function
             , dag=dag
         )
         task
-
-
-
+    
